@@ -1,0 +1,18 @@
+# Ignore root directories
+/vendor/
+/packages/
+/.*/
+
+# Ignore root files
+/*.lock
+/*.yml
+/.*
+
+# Ignore npm packages
+/src/Resources/node_modules/
+/src/Resources/app/administration/node_modules/
+/src/Resources/app/storefront/node_modules/
+
+# Ignore built content
+/src/Resources/public/administration/
+/src/Resources/app/storefront/dist/storefront/
