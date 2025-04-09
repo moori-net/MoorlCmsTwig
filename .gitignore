@@ -6,7 +6,6 @@
 # Ignore root files
 /*.lock
 /*.yml
-/.*
 
 # Ignore npm packages
 /src/Resources/node_modules/
