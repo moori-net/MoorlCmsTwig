@@ -9,9 +9,10 @@
         }
     ],
     "require": {
-        "shopware/core": "6.7.*"
+        "shopware/core": "~6.7.0"
     },
     "type": "shopware-platform-plugin",
+"minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "MoorlCmsTwig\\": "src/"
