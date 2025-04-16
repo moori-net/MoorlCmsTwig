@@ -19,7 +19,7 @@ Component.register('sw-cms-el-moorl-twig', {
             if (elemData && elemData.url) {
                 return `${context.assetsPath}${elemData.url}`;
             }
-            return `${context.assetsPath}/administration/static/img/cms/preview_mountain_large.jpg`;
+            return `${context.assetsPath}administration/administration/static/img/cms/preview_mountain_large.jpg`;
         },
         elementCss() {
             return {
