@@ -3,7 +3,7 @@ import './component';
 
 Shopware.Service('cmsService').registerCmsBlock({
     name: 'moorl-twig',
-    label: 'moorl-cms.elements.general.config.label.twig',
+    label: 'moorl-foundation.field.twig',
     category: 'text',
     component: 'sw-cms-block-moorl-twig',
     previewComponent: 'sw-cms-preview-moorl-twig',
