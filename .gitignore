@@ -1,11 +1,10 @@
 # Ignore root directories
 /vendor/
 /packages/
-/.*/
+/.idea/
 
 # Ignore root files
 /*.lock
-/*.yml
 
 # Ignore npm packages
 /src/Resources/node_modules/
