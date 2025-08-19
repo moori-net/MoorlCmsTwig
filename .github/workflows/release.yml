@@ -1,0 +1,19 @@
+name: Build extension
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - 6.6
+            - 6.7
+        paths:
+            - 'composer.json'
+
+jobs:
+    build:
+        uses: moorl/github-actions/.github/workflows/release.yml@main
+        with:
+            extensionName: ${{ github.event.repository.name }}
+        secrets:
+            accountUser: ${{ secrets.ACCOUNT_USER }}
+            accountPassword: ${{ secrets.ACCOUNT_PASSWORD }}
+            ghToken: ${{ secrets.GITHUB_TOKEN }}
