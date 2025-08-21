@@ -1,0 +1,11 @@
+{
+  "main.js": {
+    "file": "assets/moorl-cms-twig-BAC_qhWK.js",
+    "name": "moorl-cms-twig",
+    "src": "main.js",
+    "isEntry": true,
+    "css": [
+      "assets/moorl-cms-twig-CHHTZt-z.css"
+    ]
+  }
+}
