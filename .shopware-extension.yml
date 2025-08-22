@@ -1,2 +1,10 @@
 changelog:
   enabled: true
+
+build:
+  zip:
+    pack:
+      excludes:
+        paths:
+          - docs
+          - TODO.md
