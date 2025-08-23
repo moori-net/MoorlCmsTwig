@@ -1,15 +1,14 @@
-name: Build extension
+name: Release extension
 on:
     workflow_dispatch:
     push:
         branches:
-            - 6.6
-            - 6.7
+            - '**'
         paths:
             - 'composer.json'
-
 jobs:
     build:
+        if: contains(fromJSON(vars.RELEASE_BRANCHES), github.ref_name)
         uses: moorl/github-actions/.github/workflows/release.yml@main
         with:
             extensionName: ${{ github.event.repository.name }}
