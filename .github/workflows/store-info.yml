@@ -25,3 +25,11 @@ jobs:
               env:
                   SHOPWARE_CLI_ACCOUNT_EMAIL: ${{ secrets.ACCOUNT_USER }}
                   SHOPWARE_CLI_ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
+
+    update-moori-plugin-store-info:
+        if: github.ref_name == vars.LATEST_BRANCH
+        uses: moorl/github-actions/.github/workflows/moori-plugin-store-info.yml@main
+        secrets:
+            MOORI_PLUGIN_STORE_URL: ${{ secrets.MOORI_PLUGIN_STORE_URL }}
+            MOORI_PLUGIN_STORE_API_ID: ${{ secrets.MOORI_PLUGIN_STORE_API_ID }}
+            MOORI_PLUGIN_STORE_API_SECRET: ${{ secrets.MOORI_PLUGIN_STORE_API_SECRET }}
