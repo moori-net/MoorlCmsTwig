@@ -1,35 +1,140 @@
 name: Update Store Info
-on:
-    push:
-        branches:
-            - '**'
-        paths:
-            - 'docs/store.md'
-            - 'docs/store.en.md'
-            - 'docs/manual.md'
-            - 'docs/manual.en.md'
-            - '.shopware-extension.yml'
-    workflow_dispatch:
-jobs:
-    update-store-info:
-        if: github.ref_name == vars.LATEST_BRANCH && vars.PUBLISH_SHOPWARE_STORE == 'true'
-        runs-on: ubuntu-latest
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-            - name: Install shopware-cli
-              uses: shopware/shopware-cli-action@v1
-            - name: Build
-              shell: bash
-              run: shopware-cli account producer extension info push .
-              env:
-                  SHOPWARE_CLI_ACCOUNT_EMAIL: ${{ secrets.ACCOUNT_USER }}
-                  SHOPWARE_CLI_ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
 
-    update-moori-plugin-store-info:
-        if: github.ref_name == vars.LATEST_BRANCH
-        uses: moorl/github-actions/.github/workflows/moori-plugin-store-info.yml@main
-        secrets:
-            MOORI_PLUGIN_STORE_URL: ${{ secrets.MOORI_PLUGIN_STORE_URL }}
-            MOORI_PLUGIN_STORE_API_ID: ${{ secrets.MOORI_PLUGIN_STORE_API_ID }}
-            MOORI_PLUGIN_STORE_API_SECRET: ${{ secrets.MOORI_PLUGIN_STORE_API_SECRET }}
+on:
+  push:
+    branches: ['**']
+    paths:
+      - 'docs/**/*.tpl.md'          # Templates (z. B. manual.en.tpl.md)
+      - '.shopware-extension.yml'   # Manifest, das der Sync nutzt
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # 1) Optionaler "Check"-Job: rendert und zeigt die Dateien an (kein Deploy)
+  generate-markdown-files:
+    name: Render Markdown templates (check)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin repo
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Render templates ({file:...}, {var:...})
+        uses: moorl/github-actions/.github/actions/render-markdown@main
+        with:
+          working-directory: .
+          inputs: |
+            docs/**/*.tpl.md
+
+      - name: Verify rendered files
+        shell: bash
+        run: |
+          echo "PWD: $(pwd)"
+          ls -laR docs || true
+          # Passe die Checks an deine tatsächlichen Dateien an:
+          test -f docs/store.md || echo "Hinweis: docs/store.md nicht gefunden (ok, falls nur en)"
+          test -f docs/store.en.md || echo "Hinweis: docs/store.en.md nicht gefunden (ok, falls nur de)"
+          test -f docs/manual.md || echo "Hinweis: docs/manual.md nicht gefunden (ok, falls nur en)"
+          test -f docs/manual.en.md || echo "Hinweis: docs/manual.en.md nicht gefunden (ok, falls nur de)"
+
+  # 2) Offizieller Store-Push via shopware-cli
+  update-store-info:
+    name: Push to Shopware Account (shopware-cli)
+    # optional: wenn der Check gelaufen sein muss
+    needs: generate-markdown-files
+    if: github.ref_name == vars.LATEST_BRANCH && vars.PUBLISH_SHOPWARE_STORE == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin repo
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # WICHTIG: Vor dem Push erneut in-place rendern (jeder Job ist frisch)
+      - name: Render templates ({file:...}, {var:...})
+        uses: moorl/github-actions/.github/actions/render-markdown@main
+        with:
+          working-directory: .
+          inputs: |
+            docs/**/*.tpl.md
+
+      - name: Verify files exist for shopware-cli
+        shell: bash
+        run: |
+          set -e
+          ls -laR docs
+          # Falls du zwingend bestimmte Dateien brauchst, hier hart prüfen:
+          test -f docs/store.md || test -f docs/store.en.md || (echo "store(.en).md fehlt" && exit 1)
+          test -f docs/manual.md || test -f docs/manual.en.md || (echo "manual(.en).md fehlt" && exit 1)
+
+      - name: Install shopware-cli
+        uses: shopware/shopware-cli-action@v1
+
+      - name: Push extension info
+        shell: bash
+        run: shopware-cli account producer extension info push .
+        env:
+          SHOPWARE_CLI_ACCOUNT_EMAIL: ${{ secrets.ACCOUNT_USER }}
+          SHOPWARE_CLI_ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
+
+  # 3) Interner Sync per Admin API (Bilder + HTML etc.)
+  update-moori-plugin-store-info:
+    name: Sync to internal Shopware (Admin API)
+    needs: generate-markdown-files
+    if: github.ref_name == vars.LATEST_BRANCH
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin repo
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      # Ebenfalls vorab rendern – in-place im Repo
+      - name: Render templates ({file:...}, {var:...})
+        uses: moorl/github-actions/.github/actions/render-markdown@main
+        with:
+          working-directory: .
+          inputs: |
+            docs/**/*.tpl.md
+
+      - name: Verify files exist for Admin API sync
+        shell: bash
+        run: |
+          set -e
+          ls -laR docs
+          test -f docs/store.md || test -f docs/store.en.md || (echo "store(.en).md fehlt" && exit 1)
+          test -f docs/manual.md || test -f docs/manual.en.md || (echo "manual(.en).md fehlt" && exit 1)
+
+      # Tools-Repo mit dem Python-Sync-Script holen
+      - name: Checkout tools repo (scripts)
+        uses: actions/checkout@v4
+        with:
+          repository: moorl/github-actions
+          ref: main
+          path: tools
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyyaml markdown requests
+
+      - name: Run sync to internal Shopware
+        env:
+          SHOPWARE_URL: ${{ secrets.MOORI_PLUGIN_STORE_URL }}
+          SHOPWARE_CLIENT_ID: ${{ secrets.MOORI_PLUGIN_STORE_API_ID }}
+          SHOPWARE_CLIENT_SECRET: ${{ secrets.MOORI_PLUGIN_STORE_API_SECRET }}
+          REPO_NAME: ${{ github.event.repository.name }}
+          STORE_YAML_PATH: .shopware-extension.yml
+        run: |
+          python tools/scripts/moori_plugin_store_info.py \
+            --yaml-path "${STORE_YAML_PATH}" \
+            --repo-name "${REPO_NAME}"
