@@ -1,0 +1,15 @@
+name: Update docs
+on:
+    push:
+        branches:
+            - '**'
+        paths:
+            - docs/**
+jobs:
+    build:
+        if: github.ref_name == vars.LATEST_BRANCH
+        uses: moorl/github-actions/.github/workflows/docs.yml@main
+        with:
+            extensionName: ${{ github.event.repository.name }}
+        secrets:
+            docsToken: ${{ secrets.DOCS_TOKEN }}

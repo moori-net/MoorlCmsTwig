@@ -1,10 +1,9 @@
-const Application = Shopware.Application;
 import './component';
 import './config';
 
-Application.getContainer('service').cmsService.registerCmsElement({
+Shopware.Application.getContainer('service').cmsService.registerCmsElement({
     plugin: 'MoorlCmsTwig',
-    icon: 'default-text-code',
+    icon: 'regular-code',
     name: 'moorl-twig',
     label: 'HTML/Twig',
     component: 'sw-cms-el-moorl-twig',
@@ -25,18 +24,11 @@ Application.getContainer('service').cmsService.registerCmsElement({
         },
         contentCSS: {
             source: 'static',
-            value: `.moorl-cms-twig-title {
-    font-weight: 600;
-    color: {{ config('MoorlCmsTwig.config.color') }};           
-}
-.moorl-cms-twig-logo {
-    padding: 15px;
-    background-color: {{ theme_config('sw-color-brand-primary') }};          
-}`,
+            value: null,
         },
         contentJS: {
             source: 'static',
-            value: `console.log("{{ config('MoorlCmsTwig.config.string') }}");`,
+            value: null,
         },
         useTwig: {
             source: 'static',

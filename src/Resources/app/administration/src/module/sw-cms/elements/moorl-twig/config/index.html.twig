@@ -1,27 +1,22 @@
 <div class="sw-cms-el-config-moorl-twig">
-
     <sw-code-editor
-        :label="$tc('moorl-cms.elements.general.config.label.contentHTML')"
+        :label="$tc('moorl-foundation.field.contentHTML')"
         :softWraps="false"
-        v-model="element.config.contentHTML.value">
-    </sw-code-editor>
-
-    <sw-field v-model="element.config.useTwig.value"
-              bordered
-              type="switch"
-              :label="$tc('moorl-cms.elements.general.config.label.useTwig')">
-    </sw-field>
-
+        v-model:value="element.config.contentHTML.value"
+    />
+    <mt-switch
+        v-model="element.config.useTwig.value"
+        bordered
+        :label="$tc('moorl-foundation.field.useTwig')"
+    />
     <sw-code-editor
-        :label="$tc('moorl-cms.elements.general.config.label.contentCSS')"
+        :label="$tc('moorl-foundation.field.contentCSS')"
         :softWraps="false"
-        v-model="element.config.contentCSS.value">
-    </sw-code-editor>
-
+        v-model:value="element.config.contentCSS.value"
+    />
     <sw-code-editor
-        :label="$tc('moorl-cms.elements.general.config.label.contentJS')"
+        :label="$tc('moorl-foundation.field.contentJS')"
         :softWraps="false"
-        v-model="element.config.contentJS.value">
-    </sw-code-editor>
-
+        v-model:value="element.config.contentJS.value"
+    />
 </div>

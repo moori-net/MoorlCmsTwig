@@ -1,7 +1,7 @@
 {
     "name": "moorl/moorl-cms-twig",
     "description": "CMS Element - HTML/Twig",
-    "version": "1.4.3",
+    "version": "1.7.1",
     "license": "proprietary",
     "authors": [
         {
@@ -9,9 +9,10 @@
         }
     ],
     "require": {
-        "shopware/core": "6.4.*"
+        "shopware/core": "~6.7.0"
     },
     "type": "shopware-platform-plugin",
+"minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "MoorlCmsTwig\\": "src/"
@@ -25,8 +26,8 @@
             "en-GB": "CMS Element - HTML/Twig"
         },
         "description": {
-            "de-DE": "CMS Element - HTML/Twig",
-            "en-GB": "CMS Element - HTML/Twig"
+            "de-DE": "Dieses Plugin ermöglicht es im Frontend einfach HTML Elemente einzufügen. Die Handelsüblichen WYSIWYG-Editoren formatieren HTML ungewollt um oder entfernen Elemente, die man benötigt.",
+            "en-GB": "This plugin allows you to easily insert HTML elements in the frontend. The standard WYSIWYG editors unintentionally reformat HTML or remove elements that are needed."
         },
         "manufacturerLink": {
             "de-DE": "https://docs.moori.net/",

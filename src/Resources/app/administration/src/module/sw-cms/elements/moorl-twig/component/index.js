@@ -1,12 +1,11 @@
-const {Component, Application, Mixin} = Shopware;
 import template from './index.html.twig';
 import './index.scss';
 
-Component.register('sw-cms-el-moorl-twig', {
+Shopware.Component.register('sw-cms-el-moorl-twig', {
     template,
 
     mixins: [
-        Mixin.getByName('cms-element')
+        Shopware.Mixin.getByName('cms-element')
     ],
 
     computed: {
@@ -19,7 +18,7 @@ Component.register('sw-cms-el-moorl-twig', {
             if (elemData && elemData.url) {
                 return `${context.assetsPath}${elemData.url}`;
             }
-            return `${context.assetsPath}/administration/static/img/cms/preview_mountain_large.jpg`;
+            return `${context.assetsPath}administration/administration/static/img/cms/preview_mountain_large.jpg`;
         },
         elementCss() {
             return {
@@ -27,7 +26,7 @@ Component.register('sw-cms-el-moorl-twig', {
             }
         },
         frontCss() {
-            if (this.element.config.typeFront.value == 'image') {
+            if (this.element.config.typeFront.value === 'image') {
                 return {
                     'background-image': 'url(' + this.mediaUrl + ')',
                 }
