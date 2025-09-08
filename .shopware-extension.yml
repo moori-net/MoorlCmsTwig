@@ -1,5 +1,9 @@
 changelog:
   enabled: true
+  pattern: '^[A-Z].{19,}'
+  template: |
+    {{range .Commits}}- {{ .Message }}
+    {{end}}
 
 build:
   zip:
