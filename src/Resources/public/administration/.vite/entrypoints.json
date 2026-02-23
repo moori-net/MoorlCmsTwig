@@ -1,0 +1,25 @@
+{
+  "base": "/bundles/moorlcmstwig/administration/",
+  "entryPoints": {
+    "moorl-cms-twig": {
+      "css": [
+        "/bundles/moorlcmstwig/administration/assets/moorl-cms-twig-CHHTZt-z.css"
+      ],
+      "dynamic": [],
+      "js": [
+        "/bundles/moorlcmstwig/administration/assets/moorl-cms-twig-BAC_qhWK.js"
+      ],
+      "legacy": false,
+      "preload": []
+    }
+  },
+  "legacy": false,
+  "metadatas": {},
+  "version": [
+    "7.1.0",
+    7,
+    1,
+    0
+  ],
+  "viteServer": null
+}
