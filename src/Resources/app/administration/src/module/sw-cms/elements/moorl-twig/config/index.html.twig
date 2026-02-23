@@ -1,57 +1,22 @@
 <div class="sw-cms-el-config-moorl-twig">
-    <sw-cms-inherit-wrapper
-            field="contentHTML"
-            :element="element"
-            :label="$tc('moorl-foundation.field.contentHTML')"
-    >
-        <template #default="{ isInherited }">
-            <sw-code-editor
-                    :softWraps="false"
-                    v-model:value="element.config.contentHTML.value"
-                    :disabled="isInherited"
-            />
-        </template>
-    </sw-cms-inherit-wrapper>
-
-    <sw-cms-inherit-wrapper
-            field="useTwig"
-            :element="element"
-            :label="$tc('moorl-foundation.field.useTwig')"
-    >
-        <template #default="{ isInherited }">
-            <mt-switch
-                    v-model="element.config.useTwig.value"
-                    bordered
-                    :disabled="isInherited"
-            />
-        </template>
-    </sw-cms-inherit-wrapper>
-
-    <sw-cms-inherit-wrapper
-            field="contentCSS"
-            :element="element"
-            :label="$tc('moorl-foundation.field.contentCSS')"
-    >
-        <template #default="{ isInherited }">
-            <sw-code-editor
-                    :softWraps="false"
-                    v-model:value="element.config.contentCSS.value"
-                    :disabled="isInherited"
-            />
-        </template>
-    </sw-cms-inherit-wrapper>
-
-    <sw-cms-inherit-wrapper
-            field="contentJS"
-            :element="element"
-            :label="$tc('moorl-foundation.field.contentJS')"
-    >
-        <template #default="{ isInherited }">
-            <sw-code-editor
-                    :softWraps="false"
-                    v-model:value="element.config.contentJS.value"
-                    :disabled="isInherited"
-            />
-        </template>
-    </sw-cms-inherit-wrapper>
+    <sw-code-editor
+        :label="$tc('moorl-foundation.field.contentHTML')"
+        :softWraps="false"
+        v-model:value="element.config.contentHTML.value"
+    />
+    <mt-switch
+        v-model="element.config.useTwig.value"
+        bordered
+        :label="$tc('moorl-foundation.field.useTwig')"
+    />
+    <sw-code-editor
+        :label="$tc('moorl-foundation.field.contentCSS')"
+        :softWraps="false"
+        v-model:value="element.config.contentCSS.value"
+    />
+    <sw-code-editor
+        :label="$tc('moorl-foundation.field.contentJS')"
+        :softWraps="false"
+        v-model:value="element.config.contentJS.value"
+    />
 </div>

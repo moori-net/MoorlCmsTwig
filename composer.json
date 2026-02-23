@@ -1,7 +1,7 @@
 {
     "name": "moorl/moorl-cms-twig",
     "description": "CMS Element - HTML/Twig",
-    "version": "1.7.2",
+    "version": "1.7.1",
     "license": "proprietary",
     "authors": [
         {
@@ -12,6 +12,7 @@
         "shopware/core": "~6.7.0"
     },
     "type": "shopware-platform-plugin",
+"minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "MoorlCmsTwig\\": "src/"
