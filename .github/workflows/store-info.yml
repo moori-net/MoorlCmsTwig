@@ -78,8 +78,8 @@ jobs:
         shell: bash
         run: shopware-cli account producer extension info push .
         env:
-          SHOPWARE_CLI_ACCOUNT_EMAIL: ${{ secrets.ACCOUNT_USER }}
-          SHOPWARE_CLI_ACCOUNT_PASSWORD: ${{ secrets.ACCOUNT_PASSWORD }}
+          SHOPWARE_CLI_ACCOUNT_CLIENT_ID: ${{ secrets.SHOPWARE_CLI_ACCOUNT_CLIENT_ID }}
+          SHOPWARE_CLI_ACCOUNT_CLIENT_SECRET: ${{ secrets.SHOPWARE_CLI_ACCOUNT_CLIENT_SECRET }}
 
   # 3) Interner Sync per Admin API (Bilder + HTML etc.)
   update-moori-plugin-store-info:
