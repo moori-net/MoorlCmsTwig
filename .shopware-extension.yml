@@ -12,3 +12,8 @@ build:
         paths:
           - docs
           - TODO.md
+          - .gitattributes
+          - .superpowers
+          - CODEX.md
+          - tests
+          - phpunit.xml.dist
